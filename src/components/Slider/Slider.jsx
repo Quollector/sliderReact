@@ -1,20 +1,45 @@
+import { useState } from "react"
+import sliderData from "../../data/sliderData"
 import leftChevron from "../../assets/left-arrow.svg"
 import rightChevron from "../../assets/right-arrow.svg"
 import "./Slider.css"
 
 export default function Slider() {
+
+  const [sliderindex, setsliderindex] = useState(1)
+
+  function toggleImage(indexPayload) {
+    let newState;
+    if(indexPayload + sliderindex > sliderData.length){
+      newState = 1
+    }
+    else if(indexPayload + sliderindex < 1){
+      newState = sliderData.length
+    }
+    else{
+      newState = indexPayload + sliderindex
+    }
+
+    setsliderindex(newState)
+  }
+
+
   return (
     <>
-      <p className="index-info">3 / 5</p>
+      <p className="index-info">{sliderindex} / {sliderData.length}</p>
       
       <div className="slider">
-        <div className="img-info">Bedroom</div>
-        <img src="/images/img-3.jpg" alt="Bedroom" className="slider-img" />
+        <div className="img-info">{sliderData.find(obj => obj.id === sliderindex).description}</div>
+        <img src={`/images/img-${sliderindex}.jpg`} alt={sliderData.find(obj => obj.id === sliderindex).description} className="slider-img" />
 
-        <button className="navigation-button prev-button">
+        <button
+        onClick={() => toggleImage(-1)} 
+        className="navigation-button prev-button">
           <img src={leftChevron} alt="previous image" />
         </button>
-        <button className="navigation-button next-button">
+        <button
+        onClick={() => toggleImage(1)} 
+        className="navigation-button next-button">
           <img src={rightChevron} alt="next image" />
         </button>
       </div>
